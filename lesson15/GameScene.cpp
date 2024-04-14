@@ -20,7 +20,7 @@ GameScene::GameScene(SceneManager* manager)
 
 	srand(time(NULL));
 
-	hero.setPosition(rand() % 1100, rand() % 1100);
+	hero.setCenter(rand() % 1100, rand() % 1100);
 
 	
 
@@ -44,13 +44,6 @@ GameScene::GameScene(SceneManager* manager)
 
 
 		}
-
-
-
-
-		
-
-		
 		
 	}
 	for (int i = 0; i < ArrFoodSize; i++)
@@ -161,9 +154,9 @@ void GameScene::TimeElapsed(int diff)
 		}
 		else
 		{
-			if (hero._mass > GetLen(hero.getCenter(), arrFood[i].getPosition() + Vector2f(FoodRadius, FoodRadius)))
+			if (hero.getRadius() > GetLen(hero.getCenter(), arrFood[i].getPosition() + Vector2f(FoodRadius, FoodRadius)))
 			{
-				hero._mass += 1.000f;
+				hero._mass += 5.000f;
 				arrFood[i].active = false;
 			}
 		}
@@ -175,9 +168,9 @@ void GameScene::TimeElapsed(int diff)
 		{
 			continue;
 		}
-		if (hero._mass > GetLen(hero.getCenter(), thornSprite[i].getPosition() + Vector2f(ThornSpriteR, ThornSpriteR)) && hero._mass > ThornSpriteR * 1.18f)
+		if (hero.getRadius() > GetLen(hero.getCenter(), thornSprite[i].getPosition() + Vector2f(ThornSpriteR, ThornSpriteR)) && hero._mass > ThornSpriteR * 1.18f)
 		{
-			hero._mass += 7.000f;
+			hero._mass += 5* 7.000f;
 			thornSprite[i].ActiveThorn = false;
 			hero.setWeakened();
 
@@ -199,7 +192,7 @@ void GameScene::draw(RenderWindow& window)
 		arrFood[i].draw(window);
 		
 	}
-	if (hero._mass <= ThornSpriteR)
+	if (hero.getRadius() <= ThornSpriteR)
 	{
 		hero.draw(window);
 		
@@ -281,7 +274,7 @@ void GameScene::draw(RenderWindow& window)
 		}
 		
 	}*/
-	if (hero._mass > ThornSpriteR)
+	if (hero.getRadius() > ThornSpriteR)
 	{
 		hero.draw(window);
 

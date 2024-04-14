@@ -9,8 +9,8 @@ class Hero : public Objects
 public:
 	Hero();
 
-	void setPosition(float x, float y);
-	Vector2f getCenter();
+	//void setPosition(float x, float y);
+	//Vector2f getCenter();
 	void TimeElapsed(int diff);
 	void setPosMouse(int x, int y);
 	void setWeakened();
@@ -18,8 +18,8 @@ public:
 	void setFeeded();
 
 	void draw(RenderWindow& window);
-	const Vector2f& getPosition();
-	float _mass;
+	//const Vector2f& getPosition();
+	//float _mass;
 	bool Splitted;
 	bool Feeded;
 	class Piece : public Objects

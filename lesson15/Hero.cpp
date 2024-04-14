@@ -3,26 +3,25 @@
 #include "Base.h"
 
 
-Hero::Hero(): Objects(Vector2f(0, 0), 20.000f)
+Hero::Hero(): Objects(Vector2f(0, 0), 400.000f)
 {
 	
 	_shape.setFillColor(Color(250, 0, 0));
-	_mass = Objects::_mass;
-	_shape.setRadius(_mass);
+	//_mass = Objects::_mass;
+	_shape.setRadius(getRadius());
 	V.x = 0;
 	V.y = 0;
 	Splitted = false;
 }
 
-void Hero::setPosition(float x, float y)
+/*void Hero::setPosition(float x, float y)
 {
 	_shape.setPosition(x, y);
-
-}
-Vector2f Hero::getCenter()
+}*/
+/*Vector2f Hero::getCenter()
 {
 	return _shape.getPosition() + Vector2f(_mass, _mass);
-}
+}*/
 
 void Hero::TimeElapsed(int diff)
 {	
@@ -127,9 +126,9 @@ void Hero::TimeElapsed(int diff)
 		V += d * (float)diff * 0.0007f;
 		float lenV = GetLen(V, Vector2f(0, 0));
 		float maxV = 0.2f;
-		if (len < _mass)
+		if (len < getRadius())
 		{
-			maxV *= (len / _mass);
+			maxV *= (len / getRadius());
 		}
 		if (lenV > maxV)
 		{
@@ -140,7 +139,7 @@ void Hero::TimeElapsed(int diff)
 		float K = 0.2f;
 
 
-		_shape.setPosition(vector.x - _mass + V1.x * K * diff, vector.y - _mass + V1.y * K * diff);
+		setCenter(vector.x  + V1.x * K * diff, vector.y + V1.y * K * diff);
 	}
 	
 	if (Splitted == true)
@@ -189,16 +188,22 @@ void Hero::TimeElapsed(int diff)
 	}*/
 	for (auto& f : feeds)
 	{
-		if (GetLen(getCenter(), f.Center()) > _mass)
+		if (GetLen(getCenter(), f.Center()) > getRadius())
 		{
 			float lenV = GetLen(f.V);
 			float newlenV = lenV - 0.001f * diff;
 			if (newlenV < 0)
-				newlenV = 0;
-			f.V *= newlenV / lenV;
+				f.V = {0,0};
+			else
+			{
+				f.V *= newlenV / lenV;
+				
+			}
+			
 		}
+		f._shape.move(f.V* (float)diff);
+		cout << f._shape.getPosition().x << " " << f._shape.getPosition().y << endl;
 		
-		f._shape.move(f.V * (float)diff);
 	}
 }
 void Hero::setPosMouse(int x, int y)
@@ -264,7 +269,7 @@ void Hero::setFeeded()
 	f._mass = 5.f;
 	f._shape.setRadius(f._mass);
 	f._shape.setFillColor(Color::Red);
-	f._shape.setPosition(getCenter() + Vector2f(f._mass, f._mass));
+	f._shape.setPosition(getCenter() - Vector2f(f._mass, f._mass));
 	
 	Vector2f center = f.Center();
 	Vector2f Dir = (Vector2f(mouseX, mouseY) - center);
@@ -299,7 +304,8 @@ void Hero::draw(RenderWindow& window)
 	}
 	else
 	{
-		_shape.setRadius(_mass);
+		_shape.setPosition(getCenter().x - getRadius(), getCenter().y - getRadius());
+		_shape.setRadius(getRadius());
 		window.draw(_shape);
 	}
 	for (auto& f : feeds)
@@ -308,7 +314,7 @@ void Hero::draw(RenderWindow& window)
 	}
 	
 }
-const Vector2f& Hero::getPosition()
+/*const Vector2f& Hero::getPosition()
 {
 	return _shape.getPosition();
-}
+}*/

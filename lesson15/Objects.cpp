@@ -6,6 +6,12 @@ Objects::Objects(Vector2f center, float mass): _center(center), _mass(mass)
 {
 
 }
+
+void Objects::setCenter(float x, float y)
+{
+	_center.x = x;
+	_center.y = y;
+}
 Vector2f Objects::getCenter()
 {
 	return _center;
