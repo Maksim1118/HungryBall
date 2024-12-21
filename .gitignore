@@ -1,3 +1,8 @@
+# Folders
+/jsonLib/
+/Resources/
+/out/
+
 # Prerequisites
 *.d
 x64
